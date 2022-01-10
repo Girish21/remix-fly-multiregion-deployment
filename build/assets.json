@@ -1,0 +1,63 @@
+{
+  "version": "296ac047",
+  "entry": {
+    "module": "/build/entry.client-Q2Y6SX3D.js",
+    "imports": [
+      "/build/_shared/chunk-LIHS63BV.js",
+      "/build/_shared/chunk-6QH5KI2V.js",
+      "/build/_shared/chunk-E7VMOUYL.js"
+    ]
+  },
+  "routes": {
+    "root": {
+      "id": "root",
+      "path": "",
+      "module": "/build/root-J45NCQJS.js",
+      "hasAction": false,
+      "hasLoader": false,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    },
+    "routes/build-info[.]json": {
+      "id": "routes/build-info[.]json",
+      "parentId": "root",
+      "path": "build-info.json",
+      "module": "/build/routes/build-info[.]json-U2NRUHR2.js",
+      "hasAction": false,
+      "hasLoader": true,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    },
+    "routes/index": {
+      "id": "routes/index",
+      "parentId": "root",
+      "index": true,
+      "module": "/build/routes/index-4OZ35KWU.js",
+      "hasAction": false,
+      "hasLoader": false,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    },
+    "routes/refreshCache": {
+      "id": "routes/refreshCache",
+      "parentId": "root",
+      "path": "refreshCache",
+      "module": "/build/routes/refreshCache-ZRWHVDRF.js",
+      "hasAction": true,
+      "hasLoader": false,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    },
+    "routes/update": {
+      "id": "routes/update",
+      "parentId": "root",
+      "path": "update",
+      "module": "/build/routes/update-WIWHJAU5.js",
+      "hasAction": true,
+      "hasLoader": false,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    }
+  },
+  "url": "/build/manifest-296AC047.js"
+}

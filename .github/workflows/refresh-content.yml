@@ -1,0 +1,22 @@
+name: 🚀 Deploy
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+jobs:
+  test:
+    name: 🥱 Debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: ⚙️ Log
+        run: >-
+          node ./other/isDeployable.js ${{
+          github.sha }})

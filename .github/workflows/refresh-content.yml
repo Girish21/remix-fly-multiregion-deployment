@@ -18,4 +18,4 @@ jobs:
           node-version: 16
       - name: ⚙️ Log
         run: >-
-          node ./other/isDeployable.js ${{ github.sha }}
+          node ./others/isDeployable.js ${{ github.sha }}

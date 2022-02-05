@@ -1,5 +1,5 @@
 const execSync = require("child_process").execSync;
-const http = require("http");
+const http = require("https");
 
 async function fetchJSON(url) {
   return new Promise((resolve, reject) => {

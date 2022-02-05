@@ -2,7 +2,7 @@ const { fetchJSON, getChangedFiles } = require("./utils");
 
 async function go() {
   const buildInfo = await fetchJSON(
-    "https://remix-fly-region-test.fly.dev/build/build-info.json"
+    "https://remix-fly-region-test.fly.dev/build/info.json"
   );
   const previousCommitSHA = buildInfo.data.sha;
   const currentCommitSHA = process.env.GITHUB_SHA;

@@ -1,4 +1,4 @@
-name: 🚀 Deploy
+name: 🌟 Refresh Content
 on:
   push:
     branches:
@@ -6,24 +6,19 @@ on:
   pull_request: {}
 
 jobs:
-  test:
-    name: 🥱 Debug
+  refresh-cache:
+    name: 🌟 Refresh Content
     runs-on: ubuntu-latest
-    outputs:
-      DEPLOYABLE: ${{steps.changes.outputs.DEPLOYABLE}}
     steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
         with:
           fetch-depth: "50"
-      - name: ⎔ Setup node
+
+      - name: 🛠 Setup node
         uses: actions/setup-node@v2
         with:
           node-version: 16
-      - name: ⚙️ Log
-        id: changes
-        run: >-
-          echo ::set-output name=DEPLOYABLE::$(node ./others/isDeployable.js)
-      - name: ❓ Deployable
-        run: >-
-          echo "DEPLOYABLE: ${{steps.changes.outputs.DEPLOYABLE}}"

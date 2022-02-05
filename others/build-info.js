@@ -30,7 +30,7 @@ async function run() {
   };
 
   fs.writeFileSync(
-    path.join(__dirname, "../public/build/build-info.json"),
+    path.join(__dirname, "../public/build/info.json"),
     JSON.stringify(data, null, 2)
   );
 }

@@ -4,6 +4,11 @@ import { getContentState } from "~/model/content.server";
 
 export const loader: LoaderFunction = async () => {
   const rows = await getContentState();
+  const data = rows || {};
 
-  return json(rows || {});
+  return json(data, {
+    headers: {
+      "content-length": Buffer.byteLength(JSON.stringify(data)).toString(),
+    },
+  });
 };

@@ -9,6 +9,8 @@ jobs:
   test:
     name: 🥱 Debug
     runs-on: ubuntu-latest
+    outputs:
+      DEPLOYABLE: ${{steps.test.outputs.DEPLOYABLE}}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2

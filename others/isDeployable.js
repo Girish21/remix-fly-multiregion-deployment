@@ -4,9 +4,9 @@ async function go() {
   const buildInfo = await fetchJSON(
     "https://remix-fly-region-test.fly.dev/build/info.json"
   );
-  const previousCommitSHA = buildInfo.data.sha;
-  const currentCommitSHA = process.env.GITHUB_SHA;
-  const changes = getChangedFiles(previousCommitSHA, currentCommitSHA);
+  const sha = buildInfo.data.sha;
+  const compareSha = process.env.GITHUB_SHA;
+  const changes = getChangedFiles(sha, compareSha);
 
   const isDeployable =
     changes === null ||

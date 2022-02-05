@@ -21,12 +21,12 @@ async function fetchJSON(url) {
   });
 }
 
-function getChangedFiles(currentCommitSHA, previousCommitSHA) {
+function getChangedFiles(sha, compareSha) {
   try {
     const pattern = /^(?<change>\w).*?\s+(?<filename>.+$)/;
 
     const diff = execSync(
-      `git diff --name-status ${currentCommitSHA} ${previousCommitSHA}`
+      `git diff --name-status ${sha} ${compareSha}`
     ).toString();
 
     const changedFiles = diff

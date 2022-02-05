@@ -22,3 +22,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+
+      - name: 💿 Refresh Content
+        run: node ./others/refresh-content.js
+        env:
+          REFRESH_CACHE_SECRET: ${{ secrets.REFRESH_CACHE_SECRET }}

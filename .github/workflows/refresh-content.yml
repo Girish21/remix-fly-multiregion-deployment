@@ -10,7 +10,7 @@ jobs:
     name: 🥱 Debug
     runs-on: ubuntu-latest
     outputs:
-      DEPLOYABLE: ${{steps.test.outputs.DEPLOYABLE}}
+      DEPLOYABLE: ${{steps.changes.outputs.DEPLOYABLE}}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
@@ -21,8 +21,9 @@ jobs:
         with:
           node-version: 16
       - name: ⚙️ Log
+        id: changes
         run: >-
           echo ::set-output name=DEPLOYABLE::$(node ./others/isDeployable.js)
       - name: ❓ Deployable
         run: >-
-          echo "DEPLOYABLE: ${{steps.test.outputs.DEPLOYABLE}}"
+          echo "DEPLOYABLE: ${{steps.changes.outputs.DEPLOYABLE}}"

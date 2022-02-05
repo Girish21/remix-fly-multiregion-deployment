@@ -4,7 +4,7 @@
   "description": "",
   "license": "",
   "scripts": {
-    "build": "remix build",
+    "build": "remix build && COMMIT_SHA=54f9a9e33e31130f7b79f14b443e779fcf0e80b7 node ./others/build-info.js",
     "dev": "remix dev",
     "postinstall": "remix setup node",
     "deploy": "fly deploy --remote-only",

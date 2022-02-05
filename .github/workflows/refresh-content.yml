@@ -18,4 +18,7 @@ jobs:
           node-version: 16
       - name: ⚙️ Log
         run: >-
-          node ./others/isDeployable.js ${{ github.sha }}
+          echo ::set-output name=DEPLOYABLE::$(node ./others/isDeployable.js)
+      - name: ❓ Deployable
+        run: >-
+          echo "DEPLOYABLE: ${{steps.test.outputs.DEPLOYABLE}}"

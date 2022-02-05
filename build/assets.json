@@ -1,30 +1,19 @@
 {
-  "version": "296ac047",
+  "version": "256ed9d6",
   "entry": {
-    "module": "/build/entry.client-Q2Y6SX3D.js",
+    "module": "/build/entry.client-JJW4B6XD.js",
     "imports": [
-      "/build/_shared/chunk-LIHS63BV.js",
-      "/build/_shared/chunk-6QH5KI2V.js",
-      "/build/_shared/chunk-E7VMOUYL.js"
+      "/build/_shared/chunk-OTFHJ5LB.js",
+      "/build/_shared/chunk-AKSB5QXU.js"
     ]
   },
   "routes": {
     "root": {
       "id": "root",
       "path": "",
-      "module": "/build/root-J45NCQJS.js",
+      "module": "/build/root-4DP2VBOV.js",
       "hasAction": false,
       "hasLoader": false,
-      "hasCatchBoundary": false,
-      "hasErrorBoundary": false
-    },
-    "routes/build-info[.]json": {
-      "id": "routes/build-info[.]json",
-      "parentId": "root",
-      "path": "build-info.json",
-      "module": "/build/routes/build-info[.]json-U2NRUHR2.js",
-      "hasAction": false,
-      "hasLoader": true,
       "hasCatchBoundary": false,
       "hasErrorBoundary": false
     },
@@ -32,7 +21,7 @@
       "id": "routes/index",
       "parentId": "root",
       "index": true,
-      "module": "/build/routes/index-4OZ35KWU.js",
+      "module": "/build/routes/index-LLKD4UO2.js",
       "hasAction": false,
       "hasLoader": false,
       "hasCatchBoundary": false,
@@ -42,7 +31,7 @@
       "id": "routes/refreshCache",
       "parentId": "root",
       "path": "refreshCache",
-      "module": "/build/routes/refreshCache-ZRWHVDRF.js",
+      "module": "/build/routes/refreshCache-ED5VO27B.js",
       "hasAction": true,
       "hasLoader": false,
       "hasCatchBoundary": false,
@@ -52,12 +41,12 @@
       "id": "routes/update",
       "parentId": "root",
       "path": "update",
-      "module": "/build/routes/update-WIWHJAU5.js",
+      "module": "/build/routes/update-G3DAFG5D.js",
       "hasAction": true,
       "hasLoader": false,
       "hasCatchBoundary": false,
       "hasErrorBoundary": false
     }
   },
-  "url": "/build/manifest-296AC047.js"
+  "url": "/build/manifest-256ED9D6.js"
 }

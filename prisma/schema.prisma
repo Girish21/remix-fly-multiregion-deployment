@@ -16,3 +16,16 @@ model ContentState {
   sha       String
   timestamp Int
 }
+
+model Content {
+  id               String   @id @default(uuid())
+  contentDirectory String
+  slug             String   @unique
+  title            String
+  code             String
+  frontmatter      String
+  timestamp        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  published        Boolean
+  requiresUpdate   Boolean? @default(false)
+}

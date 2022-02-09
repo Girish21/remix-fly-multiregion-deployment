@@ -7,12 +7,14 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "target": "ESNext",
+    "module": "ESNext",
     "strict": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
     },
+    "importsNotUsedAsValues": "error",
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true

@@ -2,7 +2,7 @@ import nodepath from "path";
 import { Octokit as createOctokit } from "@octokit/rest";
 import { throttling } from "@octokit/plugin-throttling";
 import Lrucache from "lru-cache";
-import { GitHubFile } from "~/types";
+import type { GitHubFile } from "~/types";
 
 type ThrottleOptions = {
   method: string;
@@ -76,7 +76,7 @@ async function downloadFileByShaImpl(sha: string) {
   return Buffer.from(data.content, encoding).toString();
 }
 
-const downloadFileBySha = cachify(downloadFileByShaImpl);
+export const downloadFileBySha = cachify(downloadFileByShaImpl);
 
 async function downloadFirstMdxFileImpl(
   list: Array<{ name: string; sha: string; type: string }>
@@ -93,8 +93,8 @@ async function downloadFirstMdxFileImpl(
   return null;
 }
 
-const downloadDirectoryList = cachify(downloadDirectoryListImpl);
 const downloadFirstMdxFile = cachify(downloadFirstMdxFileImpl);
+export const downloadDirectoryList = cachify(downloadDirectoryListImpl);
 
 async function downloadDirectoryImpl(path: string): Promise<Array<GitHubFile>> {
   const fileOrDirectoryList = await downloadDirectoryList(path);
@@ -123,7 +123,7 @@ async function downloadDirectoryImpl(path: string): Promise<Array<GitHubFile>> {
   return results;
 }
 
-const downloadDirectory = cachify(downloadDirectoryImpl);
+export const downloadDirectory = cachify(downloadDirectoryImpl);
 
 export async function downloadMdxOrDirectory(relativePath: string) {
   const path = `content/${relativePath}`;

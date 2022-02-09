@@ -4,9 +4,10 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
+import Nav from "~/components/nav";
 
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };
@@ -22,6 +23,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <Nav />
         <Outlet />
         <ScrollRestoration />
         <Scripts />

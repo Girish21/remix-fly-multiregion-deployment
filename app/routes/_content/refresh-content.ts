@@ -6,14 +6,28 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ message: "Not Authorised" }, { status: 401 });
   }
 
+  const body = await request.text();
   const address = `global.${process.env.FLY_APP_NAME}.internal`;
   const ipv6s = await promises.resolve6(address);
 
   const urls = ipv6s.map((ip) => `http://[${ip}]:${process.env.PORT}`);
 
-  const fetches = urls.map((url) => fetch(`${url}/update`, { method: "POST" }));
+  const queryParams = new URLSearchParams();
+  queryParams.set("_data", "routes/_content/update-content");
 
-  await Promise.all(fetches);
+  const fetches = urls.map((url) =>
+    fetch(`${url}/_content/update-content?${queryParams}`, {
+      method: "POST",
+      body,
+      headers: {
+        auth: process.env.REFRESH_TOKEN!,
+        "content-type": "application/json",
+        "content-length": Buffer.byteLength(body).toString(),
+      },
+    })
+  );
 
-  return { ok: true };
+  const response = await Promise.all(fetches);
+
+  return json(response);
 };

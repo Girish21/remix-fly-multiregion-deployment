@@ -28,7 +28,7 @@ jobs:
       - name: ⚙️ Determine Changes
         id: changes
         run: >-
-          echo ::set-output name=DEPLOYABLE::$(node ./others/isDeployable.js)
+          echo ::set-output name=DEPLOYABLE::$(node ./others/is-deployable.js)
 
       - name: ❓ Deployable
         run: >-

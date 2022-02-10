@@ -11,10 +11,10 @@ datasource db {
 }
 
 model ContentState {
-  id        Int    @id @default(autoincrement())
-  key       String @unique
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
   sha       String
-  timestamp Int
+  timestamp DateTime @updatedAt
 }
 
 model Content {

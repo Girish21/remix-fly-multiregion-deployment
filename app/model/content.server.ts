@@ -47,7 +47,18 @@ export async function getContentList(contentDirectory = "blog") {
 }
 
 export async function getContent(slug: string) {
-  const content = await db.content.findUnique({ where: { slug } });
+  const content = await db.content.findUnique({
+    where: { slug },
+    select: {
+      code: true,
+      contentDirectory: true,
+      frontmatter: true,
+      slug: true,
+      timestamp: true,
+      title: true,
+      requiresUpdate: true,
+    },
+  });
 
   if (!content) {
     return null;

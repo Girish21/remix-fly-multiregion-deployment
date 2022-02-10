@@ -21,7 +21,6 @@ type MdxComponent = {
   title: string;
   code: string;
   timestamp: Date;
-  updatedAt: Date;
 };
 
 export type { GitHubFile, MdxPage, MdxComponent };

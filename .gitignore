@@ -7,3 +7,4 @@ build/
 .env
 prisma/*.db
 prisma/*.db*
+app/styles

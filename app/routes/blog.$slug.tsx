@@ -32,8 +32,8 @@ export default function () {
   const Component = React.useMemo(() => getMDXComponent(data.code), [data]);
 
   return (
-    <main>
+    <article className="prose prose-lg">
       <Component />
-    </main>
+    </article>
   );
 }

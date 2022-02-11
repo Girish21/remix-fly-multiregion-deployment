@@ -4,8 +4,12 @@
   "description": "",
   "license": "",
   "scripts": {
-    "build": "remix build && node ./others/build-info.js",
-    "dev": "node -r dotenv/config node_modules/.bin/remix dev",
+    "build:css": "tailwindcss -m -i styles/app.css -o app/styles/app.css",
+    "build:remix": "remix build && node ./others/build-info.js",
+    "build": "npm run build:css && npm run build:remix",
+    "dev:css": "tailwindcss -w -i styles/app.css -o app/styles/app.css",
+    "dev:remix": "node -r dotenv/config node_modules/.bin/remix dev",
+    "dev": "concurrently \"npm:dev:css\" \"npm:dev:remix\"",
     "postinstall": "remix setup node",
     "deploy": "fly deploy --remote-only",
     "start": "remix-serve build"
@@ -31,12 +35,15 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^1.1.1",
+    "@tailwindcss/typography": "^0.5.1",
     "@types/lru-cache": "^5.1.1",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
+    "concurrently": "^7.0.0",
     "dotenv": "^16.0.0",
     "esbuild-register": "^3.3.2",
     "prisma": "^3.9.1",
+    "tailwindcss": "^3.0.22",
     "typescript": "^4.1.2"
   },
   "engines": {

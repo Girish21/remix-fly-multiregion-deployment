@@ -1,5 +1,6 @@
 import {
   Links,
+  LinksFunction,
   LiveReload,
   Meta,
   Outlet,
@@ -9,8 +10,14 @@ import {
 import type { MetaFunction } from "remix";
 import Nav from "~/components/nav";
 
+import appStyles from "~/styles/app.css";
+
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };
+};
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: appStyles }];
 };
 
 export default function App() {

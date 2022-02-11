@@ -39,6 +39,12 @@ export const action: ActionFunction = async ({ request }) => {
       void setContentSHA(body.sha);
     }
 
+    console.log("💿 Updating content", {
+      sha: body.sha,
+      refreshPaths,
+      message: "refreshing content paths",
+    });
+
     return json({
       sha: body.sha,
       refreshPaths,

@@ -26,4 +26,4 @@ jobs:
       - name: 💿 Refresh Content
         run: node ./others/refresh-content.js
         env:
-          REFRESH_CACHE_SECRET: ${{ secrets.REFRESH_CACHE_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}

@@ -1,4 +1,4 @@
-const { fetchJSON, getChangedFiles } = require("./utils");
+const { fetchJSON, getChangedFiles, postJSON } = require("./utils");
 
 async function go() {
   const compareSha = process.env.GITHUB_SHA;
@@ -25,7 +25,17 @@ async function go() {
     .filter(({ filename }) => filename.startsWith("content"))
     .map(({ filename }) => filename.replace(/^content\//, ""));
 
-  console.error(contentPaths);
+  if (contentPaths) {
+    console.error("Content changed. Refreshing content", {
+      currentSHA: compareSha,
+      sha,
+      contentPaths,
+    });
+
+    const response = await postJSON({ paths: contentPaths, sha: compareSha });
+
+    console.error("Content refreshed!", { response });
+  }
 }
 
 go().catch((error) => {

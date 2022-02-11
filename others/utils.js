@@ -21,6 +21,52 @@ async function fetchJSON(url) {
   });
 }
 
+async function postJSON(postData) {
+  return new Promise((resolve, reject) => {
+    const postDataString = JSON.stringify(postData);
+    const searchParams = new URLSearchParams([
+      ["_data", "routes/_content/refresh-content"],
+    ]);
+    const options = {
+      hostname: "remix-fly-region-test.fly.dev",
+      port: 443,
+      path: `/_content/refresh-content?${searchParams}`,
+      method: "POST",
+      headers: {
+        auth: process.env.REFRESH_CACHE_SECRET,
+        "content-type": "application/json",
+        "content-length": Buffer.byteLength(postData),
+      },
+    };
+    try {
+      const req = http.request(options, (res) => {
+        let data = "";
+
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            console.error("Error!", err.message);
+            reject(data);
+          }
+        });
+        res.on("error", (err) => {
+          console.error("Error!", err.message);
+          reject(ree);
+        });
+      });
+      req.write(postDataString);
+      req.end();
+    } catch (e) {
+      console.error("Error!", e.message);
+      reject(e);
+    }
+  });
+}
+
 function getChangedFiles(sha, compareSha) {
   try {
     const pattern = /^(?<change>\w).*?\s+(?<filename>.+$)/;
@@ -46,4 +92,4 @@ function getChangedFiles(sha, compareSha) {
   }
 }
 
-module.exports = { fetchJSON, getChangedFiles };
+module.exports = { fetchJSON, getChangedFiles, postJSON };

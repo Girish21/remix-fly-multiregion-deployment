@@ -35,7 +35,7 @@ async function postJSON(postData) {
       headers: {
         auth: process.env.REFRESH_CACHE_SECRET,
         "content-type": "application/json",
-        "content-length": Buffer.byteLength(postData),
+        "content-length": Buffer.byteLength(postDataString),
       },
     };
     try {

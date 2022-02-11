@@ -23,6 +23,7 @@ async function fetchJSON(url) {
 
 async function postJSON(postData) {
   return new Promise((resolve, reject) => {
+    console.log(process.env, process.env.REFRESH_CACHE_SECRET);
     const postDataString = JSON.stringify(postData);
     const searchParams = new URLSearchParams([
       ["_data", "routes/_content/refresh-content"],

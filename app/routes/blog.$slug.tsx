@@ -59,7 +59,7 @@ export default function () {
   const Component = React.useMemo(() => getMDXComponent(data.code), [data]);
 
   return (
-    <article className="max-w-4xl min-h-screen pt-24 mx-auto prose prose-lg">
+    <article className="max-w-4xl min-h-screen pt-24 mx-auto prose prose-zinc lg:prose-lg dark:prose-invert">
       <Component />
     </article>
   );

@@ -1,15 +1,6 @@
 import db from "~/utils/db.server";
 import { getQueue } from "~/utils/p-queue.server";
 
-export async function getContentState() {
-  const rows = await db.contentState.findUnique({
-    select: { sha: true, timestamp: true },
-    where: { key: "content-state" },
-  });
-
-  return rows;
-}
-
 export async function getMdxCount(contentDirectory: string) {
   const count = await db.content.aggregate({
     _count: { _all: true },
@@ -39,7 +30,12 @@ export async function requiresUpdate(contentDirectory: string) {
 export async function getContentList(contentDirectory = "blog") {
   const contents = await db.content.findMany({
     where: { published: true, contentDirectory },
-    select: { slug: true, title: true, id: true, timestamp: true },
+    select: {
+      slug: true,
+      title: true,
+      timestamp: true,
+      description: true,
+    },
     orderBy: { timestamp: "desc" },
   });
 
@@ -57,6 +53,7 @@ export async function getContent(slug: string) {
       timestamp: true,
       title: true,
       requiresUpdate: true,
+      description: true,
     },
   });
 
@@ -110,6 +107,7 @@ async function upsertContentImpl({
   published,
   frontmatter,
   timestamp,
+  description,
 }: {
   contentDirectory: string;
   slug: string;
@@ -118,6 +116,7 @@ async function upsertContentImpl({
   published: boolean;
   frontmatter: Record<string, unknown>;
   timestamp: Date;
+  description: string;
 }) {
   await db.content.upsert({
     where: { slug },
@@ -127,6 +126,7 @@ async function upsertContentImpl({
       published,
       title,
       requiresUpdate: false,
+      description,
     },
     create: {
       contentDirectory,
@@ -136,6 +136,7 @@ async function upsertContentImpl({
       slug,
       title,
       timestamp,
+      description,
     },
   });
 }

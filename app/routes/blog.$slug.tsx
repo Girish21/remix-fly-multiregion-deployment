@@ -1,5 +1,10 @@
 import * as React from "react";
-import type { LinksFunction, LoaderFunction } from "remix";
+import type {
+  HeadersFunction,
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "remix";
 import { useLoaderData } from "remix";
 import { getMDXComponent } from "mdx-bundler/client";
 import { json } from "remix";
@@ -8,8 +13,30 @@ import { getMdxPage } from "~/utils/mdx.server";
 import type { MdxComponent } from "~/types";
 
 import styles from "highlight.js/styles/night-owl.css";
+import { getSeoMeta } from "~/utils/seo";
+
+export const meta: MetaFunction = ({ data }: { data: MdxComponent }) => {
+  const seoMeta = getSeoMeta({
+    title: data.title,
+    description: data.description,
+    twitter: {
+      description: data.description,
+      title: data.title,
+    },
+  });
+
+  return { ...seoMeta };
+};
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "cache-control":
+      loaderHeaders.get("cache-control") ?? "private, max-age=60",
+    Vary: "Cookie",
+  };
+};
 
 export const loader: LoaderFunction = async ({ params }) => {
   const slug = params.slug;
@@ -32,7 +59,7 @@ export default function () {
   const Component = React.useMemo(() => getMDXComponent(data.code), [data]);
 
   return (
-    <article className="prose prose-lg">
+    <article className="max-w-4xl min-h-screen pt-24 mx-auto prose prose-lg">
       <Component />
     </article>
   );

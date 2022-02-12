@@ -74,6 +74,7 @@ async function upsertContent(
           slug: compiledPage.slug,
           title: compiledPage.frontmatter.title ?? "",
           timestamp: new Date(compiledPage.frontmatter.date ?? ""),
+          description: compiledPage.frontmatter.description ?? "",
         });
       }
       return null;
@@ -156,7 +157,8 @@ export async function getMdxPage({
   const [compiledPage] = await compileMdxPages(pages);
 
   if (!compiledPage) {
-    throw new Error(`Page ${slug} could not be compiled`);
+    console.error(`Page ${slug} could not be compiled`);
+    return null;
   }
 
   return {
@@ -167,5 +169,6 @@ export async function getMdxPage({
     slug,
     timestamp: new Date(compiledPage.frontmatter.date ?? ""),
     title: compiledPage.frontmatter.title ?? "",
+    description: compiledPage.frontmatter.description ?? "",
   };
 }

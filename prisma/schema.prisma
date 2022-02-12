@@ -28,4 +28,5 @@ model Content {
   updatedAt        DateTime @updatedAt
   published        Boolean
   requiresUpdate   Boolean? @default(false)
+  description      String   @default("")
 }

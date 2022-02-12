@@ -54,7 +54,7 @@ export default function Index() {
         </div>
       </section>
       <section className="w-[90vw] mx-auto mt-32">
-        <div className="lg:w-3/4 mx-auto">
+        <div className="max-w-4xl mx-auto">
           <h2 className="text-xl text-gray-800">Recent Posts</h2>
           <BlogList blogList={blogList} />
         </div>

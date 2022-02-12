@@ -55,7 +55,9 @@ export default function Index() {
       </section>
       <section className="w-[90vw] mx-auto mt-32">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl text-gray-800">Recent Posts</h2>
+          <h2 className="text-xl text-gray-800 dark:text-gray-100">
+            Recent Posts
+          </h2>
           <BlogList blogList={blogList} />
         </div>
       </section>
@@ -66,7 +68,7 @@ export default function Index() {
 function GradientText(props: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span
-      className="text-center text-6xl leading-snug text-transparent bg-gradient-to-r from-sky-600 via-pink-500 to-red-600 bg-clip-text"
+      className="text-center text-6xl leading-snug text-transparent bg-gradient-to-r from-sky-600 via-pink-500 to-red-600 dark:via-blue-400 dark:to-green-300 bg-clip-text"
       {...props}
     />
   );

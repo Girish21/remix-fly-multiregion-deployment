@@ -25,8 +25,8 @@ async function go() {
     .filter(({ filename }) => filename.startsWith("content"))
     .map(({ filename }) => filename.replace(/^content\//, ""));
 
-  if (contentPaths) {
-    console.error("Content changed. Refreshing content", {
+  if (contentPaths && contentPaths.length > 0) {
+    console.error("Content changed. Refreshing content 💿", {
       currentSHA: compareSha,
       sha,
       contentPaths,
@@ -34,7 +34,9 @@ async function go() {
 
     const response = await postJSON({ paths: contentPaths, sha: compareSha });
 
-    console.error("Content refreshed!", { response });
+    console.error("Content refreshed 🚀", { response });
+  } else {
+    console.error("Nothing to refresh ✨");
   }
 }
 

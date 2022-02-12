@@ -1,3 +1,3 @@
 export default function () {
-  return "Example component 1";
+  return <p>Example component 1</p>;
 }

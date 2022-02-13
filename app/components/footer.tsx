@@ -19,21 +19,20 @@ export default function Footer() {
           <h3 className="text-4xl font-bold place-self-center text-gray-800 dark:text-gray-100">
             Remix Blog
           </h3>
-          <div className="flex items-center justify-center gap-6">
+          <ul className="flex items-center justify-center gap-6">
             <Link href="https://github.com/remix-run/remix">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 text-gray-500 dark:text-gray-300"
-              >
+              <Svg>
                 <use href={`${GitHubSvg}#icon-github`} />
-              </svg>
+              </Svg>
+              <span className="sr-only">GitHub</span>
             </Link>
             <Link href="https://twitter.com/remix_run">
               <Svg>
                 <use href={`${TwitterSvg}#icon-twitter`} />
               </Svg>
+              <span className="sr-only">Twitter</span>
             </Link>
-          </div>
+          </ul>
         </div>
         <div className="flex flex-col justify-center">
           <ul className="flex flex-col gap-4">
@@ -67,13 +66,15 @@ function Link({
   reload?: boolean;
 }) {
   return (
-    <LinkOrAnchor
-      href={href}
-      reloadDocument={reload}
-      className="text-xl text-gray-600 dark:text-gray-200"
-      prefetch={!href.includes(":") ? "intent" : "none"}
-    >
-      {children}
-    </LinkOrAnchor>
+    <li>
+      <LinkOrAnchor
+        href={href}
+        reloadDocument={reload}
+        className="text-xl text-gray-600 dark:text-gray-200"
+        prefetch={!href.includes(":") ? "intent" : "none"}
+      >
+        {children}
+      </LinkOrAnchor>
+    </li>
   );
 }

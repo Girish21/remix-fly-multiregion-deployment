@@ -34,6 +34,7 @@ export default function ThemeToggle() {
           <use href={`${LightBulbSvg}#light-mode-bulb`} />
         )}
       </svg>
+      <span className="sr-only">{dark ? "Dark theme" : "Light theme"}</span>
     </button>
   );
 }

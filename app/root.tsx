@@ -10,9 +10,9 @@ import {
   useLoaderData,
 } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
-import Nav from "~/components/nav";
+import { SkipNavContent, SkipNavLink } from "@reach/skip-nav";
 
-import appStyles from "~/styles/app.css";
+import Nav from "~/components/nav";
 import Footer, { preloadFooterSvg } from "./components/footer";
 import {
   SsrTheme,
@@ -24,12 +24,16 @@ import {
 import { getThemeSession } from "./utils/theme-session.server";
 import { preloadSvg } from "./components/theme-toggle";
 
+import appStyles from "~/styles/app.css";
+import skipNavStyles from "@reach/skip-nav/styles.css";
+
 type LoaderData = { theme: Theme | null };
 
 const HUNDRED_YEARS = 60 * 60 * 24 * 365 * 100;
 
 export const links: LinksFunction = () => {
   return [
+    { rel: "stylesheet", href: skipNavStyles },
     { rel: "stylesheet", href: appStyles },
     ...preloadSvg(),
     ...preloadFooterSvg(),
@@ -78,9 +82,11 @@ function App() {
         <Links />
       </head>
       <body className="h-full bg-white dark:bg-slate-800">
+        <SkipNavLink className="bg-gray-700">Skip to content</SkipNavLink>
         <div className="h-full flex flex-col">
           <Nav />
           <main className="flex-1 px-6">
+            <SkipNavContent />
             <Outlet />
           </main>
           <Footer />

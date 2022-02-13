@@ -3,15 +3,15 @@ const { fetchJSON, getChangedFiles, postJSON } = require("./utils");
 async function go() {
   const compareSha = process.env.GITHUB_SHA;
 
-  const shaInfo = await fetchJSON(
-    "https://remix-fly-region-test.fly.dev/_content/refresh-content.json"
-  );
+  const shaInfo = await fetchJSON({
+    url: "https://remix-fly-region-test.fly.dev/_content/refresh-content.json",
+  });
   let sha = shaInfo?.sha;
 
   if (!sha) {
-    const buildInfo = await fetchJSON(
-      "https://remix-fly-region-test.fly.dev/build/info.json"
-    );
+    const buildInfo = await fetchJSON({
+      url: "https://remix-fly-region-test.fly.dev/build/info.json",
+    });
     sha = buildInfo.data.sha;
   }
 
@@ -32,7 +32,9 @@ async function go() {
       contentPaths,
     });
 
-    const response = await postJSON({ paths: contentPaths, sha: compareSha });
+    const response = await postJSON({
+      postData: { paths: contentPaths, sha: compareSha },
+    });
 
     console.error("Content refreshed 🚀", { response });
   } else {

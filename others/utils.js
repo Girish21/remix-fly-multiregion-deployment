@@ -1,7 +1,6 @@
 const execSync = require("child_process").execSync;
-const http = require("https");
 
-async function fetchJSON(url) {
+async function fetchJSON({ http = require("https"), url }) {
   return new Promise((resolve, reject) => {
     http.get(url, (res) => {
       let data = "";
@@ -21,7 +20,12 @@ async function fetchJSON(url) {
   });
 }
 
-async function postJSON(postData) {
+async function postJSON({
+  http = require("https"),
+  postData,
+  overrideOptions = {},
+  overrideHeaders = {},
+}) {
   return new Promise((resolve, reject) => {
     const postDataString = JSON.stringify(postData);
     const searchParams = new URLSearchParams([
@@ -36,7 +40,9 @@ async function postJSON(postData) {
         auth: process.env.REFRESH_TOKEN,
         "content-type": "application/json",
         "content-length": Buffer.byteLength(postDataString),
+        ...overrideHeaders,
       },
+      ...overrideOptions,
     };
     try {
       const req = http.request(options, (res) => {

@@ -13,7 +13,7 @@ import type { LinksFunction, LoaderFunction } from "remix";
 import Nav from "~/components/nav";
 
 import appStyles from "~/styles/app.css";
-import Footer from "./components/footer";
+import Footer, { preloadFooterSvg } from "./components/footer";
 import {
   SsrTheme,
   Theme,
@@ -29,7 +29,11 @@ type LoaderData = { theme: Theme | null };
 const HUNDRED_YEARS = 60 * 60 * 24 * 365 * 100;
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: appStyles }, ...preloadSvg()];
+  return [
+    { rel: "stylesheet", href: appStyles },
+    ...preloadSvg(),
+    ...preloadFooterSvg(),
+  ];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {

@@ -1,4 +1,5 @@
 import { createCookieSessionStorage } from "remix";
+import { getRequiredEnvVar } from "./misc";
 import type { Theme } from "./theme";
 
 const { commitSession, getSession } = createCookieSessionStorage({
@@ -8,7 +9,7 @@ const { commitSession, getSession } = createCookieSessionStorage({
     name: "theme",
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365 * 100),
-    secrets: [process.env.SESSION_SECRETS!],
+    secrets: [getRequiredEnvVar("SESSION_SECRETS")],
     secure: true,
   },
 });

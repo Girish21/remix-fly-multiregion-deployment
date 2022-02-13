@@ -4,6 +4,7 @@ import nodepath from "path";
 import { setRequiresUpdate } from "~/model/content.server";
 import { getMdxListItems } from "~/utils/mdx.server";
 import { setContentSHA } from "~/model/content-state.server";
+import { getRequiredEnvVar } from "~/utils/misc";
 
 type Body = {
   paths: Array<string>;
@@ -11,7 +12,7 @@ type Body = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  if (request.headers.get("auth") !== process.env.REFRESH_TOKEN) {
+  if (request.headers.get("auth") !== getRequiredEnvVar("REFRESH_TOKEN")) {
     return json({ message: "Not Authorised" }, { status: 401 });
   }
 

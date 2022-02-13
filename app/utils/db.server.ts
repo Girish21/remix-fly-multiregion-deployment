@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { getRequiredEnvVar } from "./misc";
 
 declare global {
   var client: PrismaClient | undefined;
@@ -6,7 +7,7 @@ declare global {
 
 let client: PrismaClient;
 
-if (process.env.NODE_ENV === "production") {
+if (getRequiredEnvVar("NODE_ENV") === "production") {
   client = new PrismaClient();
 } else {
   if (!global.client) {

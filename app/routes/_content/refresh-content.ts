@@ -1,16 +1,17 @@
 import { ActionFunction, json } from "remix";
 import { promises } from "dns";
+import { getRequiredEnvVar } from "~/utils/misc";
 
 export const action: ActionFunction = async ({ request }) => {
-  if (request.headers.get("auth") !== process.env.REFRESH_TOKEN) {
+  if (request.headers.get("auth") !== getRequiredEnvVar("REFRESH_TOKEN")) {
     return json({ message: "Not Authorised" }, { status: 401 });
   }
 
   const body = await request.text();
-  const address = `global.${process.env.FLY_APP_NAME}.internal`;
+  const address = `global.${getRequiredEnvVar("FLY_APP_NAME")}.internal`;
   const ipv6s = await promises.resolve6(address);
 
-  const urls = ipv6s.map((ip) => `http://[${ip}]:${process.env.PORT}`);
+  const urls = ipv6s.map((ip) => `http://[${ip}]:${getRequiredEnvVar("PORT")}`);
 
   const queryParams = new URLSearchParams();
   queryParams.set("_data", "routes/_content/update-content");
@@ -20,7 +21,7 @@ export const action: ActionFunction = async ({ request }) => {
       method: "POST",
       body,
       headers: {
-        auth: process.env.REFRESH_TOKEN!,
+        auth: getRequiredEnvVar("REFRESH_TOKEN"),
         "content-type": "application/json",
         "content-length": Buffer.byteLength(body).toString(),
       },

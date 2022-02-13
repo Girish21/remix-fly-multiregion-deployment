@@ -3,6 +3,7 @@ import { Octokit as createOctokit } from "@octokit/rest";
 import { throttling } from "@octokit/plugin-throttling";
 import Lrucache from "lru-cache";
 import type { GitHubFile } from "~/types";
+import { getRequiredEnvVar } from "./misc";
 
 type ThrottleOptions = {
   method: string;
@@ -18,7 +19,7 @@ const cache = new Lrucache({
 const Octokit = createOctokit.plugin(throttling);
 
 const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
+  auth: getRequiredEnvVar("GITHUB_TOKEN"),
   throttle: {
     onRateLimit: (retryAfter: number, options: ThrottleOptions) => {
       console.warn(

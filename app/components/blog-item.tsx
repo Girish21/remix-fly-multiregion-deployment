@@ -5,8 +5,12 @@ type BlogItem = Awaited<ReturnType<typeof getMdxListItems>>[0];
 
 export default function BlogItem({ description, slug, title }: BlogItem) {
   return (
-    <Link prefetch="intent" to={`/blog/${slug}`} className="py-4">
-      <li className="flex flex-col gap-2  max-w-[65ch]">
+    <li className="py-4">
+      <Link
+        prefetch="intent"
+        to={`/blog/${slug}`}
+        className="flex flex-col gap-2"
+      >
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-50">
           {title}
         </h2>
@@ -14,7 +18,7 @@ export default function BlogItem({ description, slug, title }: BlogItem) {
           {description}
         </p>
         <div className="font-bold text-gray-800 text-base">Read more</div>
-      </li>
-    </Link>
+      </Link>
+    </li>
   );
 }

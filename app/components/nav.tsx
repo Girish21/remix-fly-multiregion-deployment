@@ -5,7 +5,7 @@ import { ClientOnly } from "remix-utils";
 export default function Nav() {
   return (
     <header className="py-8 px-6">
-      <nav className="max-w-4xl mx-auto flex justify-around items-center">
+      <nav className="max-w-4xl mx-auto flex justify-between items-center">
         <div className="flex items-center gap-4">
           <NavLink to="/">Home</NavLink>
           <NavLink prefetch="intent" to="/blog">

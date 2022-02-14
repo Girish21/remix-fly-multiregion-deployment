@@ -60,7 +60,8 @@ export function ThemeProvider({
       { theme },
       { method: 'post', action: '_action/set-theme' },
     )
-  }, [theme, themeFetcher])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme])
 
   React.useEffect(() => {
     const media = window.matchMedia(themeMediaQuery)

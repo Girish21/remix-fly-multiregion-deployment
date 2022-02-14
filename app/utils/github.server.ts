@@ -1,163 +1,162 @@
-import nodepath from "path";
-import { Octokit as createOctokit } from "@octokit/rest";
-import { throttling } from "@octokit/plugin-throttling";
-import Lrucache from "lru-cache";
-import type { GitHubFile } from "~/types";
-import { getRequiredEnvVar } from "./misc";
+import nodepath from 'path'
+import { Octokit as createOctokit } from '@octokit/rest'
+import { throttling } from '@octokit/plugin-throttling'
+import Lrucache from 'lru-cache'
+import type { GitHubFile } from '~/types'
+import { getRequiredEnvVar } from './misc'
 
 type ThrottleOptions = {
-  method: string;
-  url: string;
-  request: { retryCount: number };
-};
+  method: string
+  url: string
+  request: { retryCount: number }
+}
 
 const cache = new Lrucache({
   maxAge: 1000 * 60,
-  length: (value) => Buffer.byteLength(JSON.stringify(value)),
-});
+  length: value => Buffer.byteLength(JSON.stringify(value)),
+})
 
-const Octokit = createOctokit.plugin(throttling);
+const Octokit = createOctokit.plugin(throttling)
 
 const octokit = new Octokit({
-  auth: getRequiredEnvVar("GITHUB_TOKEN"),
+  auth: getRequiredEnvVar('GITHUB_TOKEN'),
   throttle: {
     onRateLimit: (retryAfter: number, options: ThrottleOptions) => {
       console.warn(
-        `Request quota exhausted for request ${options.method} ${options.url}. Retrying after ${retryAfter} seconds.`
-      );
+        `Request quota exhausted for request ${options.method} ${options.url}. Retrying after ${retryAfter} seconds.`,
+      )
 
-      return true;
+      return true
     },
     onAbuseLimit: (_: number, options: ThrottleOptions) => {
       octokit.log.warn(
-        `Abuse detected for request ${options.method} ${options.url}`
-      );
+        `Abuse detected for request ${options.method} ${options.url}`,
+      )
     },
   },
-});
+})
 
 function cachify<TArgs, TReturn>(fn: (args: TArgs) => Promise<TReturn>) {
   return async function (args: TArgs): Promise<TReturn> {
     if (cache.has(args)) {
-      return cache.get(args) as TReturn;
+      return cache.get(args) as TReturn
     }
-    const result = await fn(args);
-    cache.set(args, result);
-    return result;
-  };
+    const result = await fn(args)
+    cache.set(args, result)
+    return result
+  }
 }
 
 async function downloadDirectoryListImpl(path: string) {
   const { data } = await octokit.repos.getContent({
-    owner: getRequiredEnvVar("GH_OWNER"),
-    repo: getRequiredEnvVar("GH_REPO"),
+    owner: getRequiredEnvVar('GH_OWNER'),
+    repo: getRequiredEnvVar('GH_REPO'),
     path,
-  });
+  })
 
   if (!Array.isArray(data)) {
     throw new Error(
-      `GitHub should always return an array, not sure what happened for the path ${path}`
-    );
+      `GitHub should always return an array, not sure what happened for the path ${path}`,
+    )
   }
 
-  return data;
+  return data
 }
 
 async function downloadFileByShaImpl(sha: string) {
   const { data } = await octokit.request(
-    "GET /repos/{owner}/{repo}/git/blobs/{file_sha}",
+    'GET /repos/{owner}/{repo}/git/blobs/{file_sha}',
     {
-      owner: getRequiredEnvVar("GH_OWNER"),
-      repo: getRequiredEnvVar("GH_REPO"),
+      owner: getRequiredEnvVar('GH_OWNER'),
+      repo: getRequiredEnvVar('GH_REPO'),
       file_sha: sha,
-    }
-  );
+    },
+  )
 
-  const encoding = data.encoding as Parameters<typeof Buffer.from>["1"];
-  return Buffer.from(data.content, encoding).toString();
+  const encoding = data.encoding as Parameters<typeof Buffer.from>['1']
+  return Buffer.from(data.content, encoding).toString()
 }
 
-export const downloadFileBySha = cachify(downloadFileByShaImpl);
+export const downloadFileBySha = cachify(downloadFileByShaImpl)
 
 async function downloadFirstMdxFileImpl(
-  list: Array<{ name: string; sha: string; type: string }>
+  list: Array<{ name: string; sha: string; type: string }>,
 ) {
-  const filesOnly = list.filter(({ type }) => type === "file");
+  const filesOnly = list.filter(({ type }) => type === 'file')
 
-  for (const extension of [".mdx", ".md"]) {
-    const file = filesOnly.find(({ name }) => name.endsWith(extension));
+  for (const extension of ['.mdx', '.md']) {
+    const file = filesOnly.find(({ name }) => name.endsWith(extension))
     if (file) {
-      return downloadFileBySha(file.sha);
+      return downloadFileBySha(file.sha)
     }
   }
 
-  return null;
+  return null
 }
 
-const downloadFirstMdxFile = cachify(downloadFirstMdxFileImpl);
-export const downloadDirectoryList = cachify(downloadDirectoryListImpl);
+const downloadFirstMdxFile = cachify(downloadFirstMdxFileImpl)
+export const downloadDirectoryList = cachify(downloadDirectoryListImpl)
 
 async function downloadDirectoryImpl(path: string): Promise<Array<GitHubFile>> {
-  const fileOrDirectoryList = await downloadDirectoryList(path);
+  const fileOrDirectoryList = await downloadDirectoryList(path)
 
-  const results: Array<GitHubFile> = [];
+  const results: Array<GitHubFile> = []
 
   for (const fileOrDirectory of fileOrDirectoryList) {
     switch (fileOrDirectory.type) {
-      case "file": {
-        const content = await downloadFileBySha(fileOrDirectory.sha);
-        results.push({ path: fileOrDirectory.path, content });
-        break;
+      case 'file': {
+        const content = await downloadFileBySha(fileOrDirectory.sha)
+        results.push({ path: fileOrDirectory.path, content })
+        break
       }
-      case "dir": {
-        const fileList = await downloadDirectoryImpl(fileOrDirectory.path);
-        results.push(...fileList);
-        break;
+      case 'dir': {
+        const fileList = await downloadDirectoryImpl(fileOrDirectory.path)
+        results.push(...fileList)
+        break
       }
       default:
         throw new Error(
-          `Unknown file type returned for the file ${fileOrDirectory.path}`
-        );
+          `Unknown file type returned for the file ${fileOrDirectory.path}`,
+        )
     }
   }
 
-  return results;
+  return results
 }
 
-export const downloadDirectory = cachify(downloadDirectoryImpl);
+export const downloadDirectory = cachify(downloadDirectoryImpl)
 
 export async function downloadMdxOrDirectory(relativePath: string) {
-  const path = `content/${relativePath}`;
+  const path = `content/${relativePath}`
 
-  const directory = nodepath.dirname(path);
-  const basename = nodepath.basename(path);
-  const nameWithoutExt = nodepath.parse(path).name;
+  const directory = nodepath.dirname(path)
+  const basename = nodepath.basename(path)
+  const nameWithoutExt = nodepath.parse(path).name
 
-  const directoryList = await downloadDirectoryList(directory);
+  const directoryList = await downloadDirectoryList(directory)
 
   const potentials = directoryList.filter(({ name }) =>
-    name.startsWith(basename)
-  );
-  const potentialDirectory = potentials.find(({ type }) => type === "dir");
+    name.startsWith(basename),
+  )
+  const potentialDirectory = potentials.find(({ type }) => type === 'dir')
   const exactMatch = potentials.find(
-    ({ name }) => nodepath.parse(name).name === nameWithoutExt
-  );
+    ({ name }) => nodepath.parse(name).name === nameWithoutExt,
+  )
 
   const content = await downloadFirstMdxFile(
-    exactMatch ? [exactMatch] : potentials
-  );
+    exactMatch ? [exactMatch] : potentials,
+  )
 
-  let entry = path;
-  let files: Array<GitHubFile> = [];
+  let entry = path
+  let files: Array<GitHubFile> = []
 
   if (content) {
-    entry =
-      path.endsWith(".mdx") || path.endsWith(".md") ? path : `${path}.mdx`;
-    files = [{ path: nodepath.join(path, "index.mdx"), content }];
+    entry = path.endsWith('.mdx') || path.endsWith('.md') ? path : `${path}.mdx`
+    files = [{ path: nodepath.join(path, 'index.mdx'), content }]
   } else if (potentialDirectory) {
-    entry = potentialDirectory.path;
-    files = await downloadDirectory(path);
+    entry = potentialDirectory.path
+    files = await downloadDirectory(path)
   }
 
-  return { entry, files };
+  return { entry, files }
 }

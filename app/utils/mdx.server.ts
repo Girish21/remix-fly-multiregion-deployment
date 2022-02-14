@@ -1,70 +1,70 @@
-import type { Content } from "@prisma/client";
+import type { Content } from '@prisma/client'
 import {
   getContent,
   getContentList,
   getMdxCount,
   requiresUpdate,
   upsertContent as upsertContentImpl,
-} from "~/model/content.server";
-import type { MdxPage } from "~/types";
-import { compileMdx } from "./compile-mdx.server";
-import { downloadDirectoryList, downloadMdxOrDirectory } from "./github.server";
+} from '~/model/content.server'
+import type { MdxPage } from '~/types'
+import { compileMdx } from './compile-mdx.server'
+import { downloadDirectoryList, downloadMdxOrDirectory } from './github.server'
 
 async function dirList(dir: string) {
-  const basePath = `content/${dir}`;
-  const dirList = await downloadDirectoryList(basePath);
+  const basePath = `content/${dir}`
+  const dirList = await downloadDirectoryList(basePath)
 
   return dirList.map(({ name, path }) => {
     return {
       name,
-      slug: path.replace(`${basePath}/`, "").replace(/.mdx?$/, ""),
-    };
-  });
+      slug: path.replace(`${basePath}/`, '').replace(/.mdx?$/, ''),
+    }
+  })
 }
 
 async function downloadMdx(
   filesList: Array<{ slug: string }>,
-  contentDir: string
+  contentDir: string,
 ) {
   return Promise.all(
     filesList.map(async ({ slug }) => {
-      const path = `${contentDir}/${slug}`;
+      const path = `${contentDir}/${slug}`
 
       return {
         ...(await downloadMdxOrDirectory(path)),
         path,
         slug,
-      };
-    })
-  );
+      }
+    }),
+  )
 }
 
 async function compileMdxPages(pages: Awaited<ReturnType<typeof downloadMdx>>) {
   return Promise.all(
     pages.map(async ({ files, slug }) => {
-      const compiledPage = await compileMdx<MdxPage["frontmatter"]>({
+      const compiledPage = await compileMdx<MdxPage['frontmatter']>({
         files,
         slug,
-      });
+      })
 
       if (!compiledPage) {
-        return null;
+        return null
       }
 
       return {
         ...compiledPage,
         slug,
-      };
-    })
-  );
+      }
+    }),
+  )
 }
 
 async function upsertContent(
   compiledPages: Awaited<ReturnType<typeof compileMdxPages>>,
-  contentDirectory: string
+  contentDirectory: string,
 ) {
   return Promise.all(
-    compiledPages.map((compiledPage) => {
+    compiledPages.map(compiledPage => {
       if (compiledPage) {
         return upsertContentImpl({
           contentDirectory,
@@ -72,46 +72,46 @@ async function upsertContent(
           frontmatter: compiledPage.frontmatter,
           published: compiledPage.frontmatter.published ?? false,
           slug: compiledPage.slug,
-          title: compiledPage.frontmatter.title ?? "",
-          timestamp: new Date(compiledPage.frontmatter.date ?? ""),
-          description: compiledPage.frontmatter.description ?? "",
-        });
+          title: compiledPage.frontmatter.title ?? '',
+          timestamp: new Date(compiledPage.frontmatter.date ?? ''),
+          description: compiledPage.frontmatter.description ?? '',
+        })
       }
-      return null;
-    })
-  );
+      return null
+    }),
+  )
 }
 
 async function populateMdx(contentDirectory: string) {
-  const filesList = await dirList(contentDirectory);
-  const pages = await downloadMdx(filesList, contentDirectory);
-  const compiledPages = await compileMdxPages(pages);
-  await upsertContent(compiledPages, contentDirectory);
+  const filesList = await dirList(contentDirectory)
+  const pages = await downloadMdx(filesList, contentDirectory)
+  const compiledPages = await compileMdxPages(pages)
+  await upsertContent(compiledPages, contentDirectory)
 }
 
 async function updateMdx(mdxToUpdate: Content[], contentDirectory: string) {
-  const pages = await downloadMdx(mdxToUpdate, contentDirectory);
-  const compiledPages = await compileMdxPages(pages);
-  await upsertContent(compiledPages, contentDirectory);
+  const pages = await downloadMdx(mdxToUpdate, contentDirectory)
+  const compiledPages = await compileMdxPages(pages)
+  await upsertContent(compiledPages, contentDirectory)
 }
 
 export async function getMdxListItems({
   contentDirectory,
 }: {
-  contentDirectory: string;
+  contentDirectory: string
 }) {
   const [count, pagesToUpdates] = await Promise.all([
     getMdxCount(contentDirectory),
     requiresUpdate(contentDirectory),
-  ]);
+  ])
 
   if (count === 0) {
-    await populateMdx(contentDirectory);
+    await populateMdx(contentDirectory)
   }
   if (pagesToUpdates && pagesToUpdates.length > 0) {
-    await updateMdx(pagesToUpdates, contentDirectory);
+    await updateMdx(pagesToUpdates, contentDirectory)
   }
-  return getContentList();
+  return getContentList()
 }
 
 /**
@@ -144,25 +144,25 @@ export async function getMdxPage({
   slug,
   contentDirectory,
 }: {
-  slug: string;
-  contentDirectory: string;
+  slug: string
+  contentDirectory: string
 }): ReturnType<typeof getContent> {
-  const data = await getContent(slug);
+  const data = await getContent(slug)
 
   if (data && !data.requiresUpdate) {
-    return data;
+    return data
   }
 
-  const pages = await downloadMdx([{ slug }], contentDirectory);
-  const [compiledPage] = await compileMdxPages(pages);
+  const pages = await downloadMdx([{ slug }], contentDirectory)
+  const [compiledPage] = await compileMdxPages(pages)
 
   if (!compiledPage) {
-    console.error(`Page ${slug} could not be compiled`);
-    return null;
+    console.error(`Page ${slug} could not be compiled`)
+    return null
   }
 
   if (!compiledPage.frontmatter.published) {
-    return null;
+    return null
   }
 
   return {
@@ -171,8 +171,8 @@ export async function getMdxPage({
     frontmatter: compiledPage.frontmatter,
     requiresUpdate: false,
     slug,
-    timestamp: new Date(compiledPage.frontmatter.date ?? ""),
-    title: compiledPage.frontmatter.title ?? "",
-    description: compiledPage.frontmatter.description ?? "",
-  };
+    timestamp: new Date(compiledPage.frontmatter.date ?? ''),
+    title: compiledPage.frontmatter.title ?? '',
+    description: compiledPage.frontmatter.description ?? '',
+  }
 }

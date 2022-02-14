@@ -1,24 +1,24 @@
-const { fetchJSON, getChangedFiles } = require("./utils");
+const { fetchJSON, getChangedFiles } = require('./utils')
 
 async function go() {
   const buildInfo = await fetchJSON({
-    url: "https://remix-fly-region-test.fly.dev/build/info.json",
-  });
-  const sha = buildInfo.data.sha;
-  const compareSha = process.env.GITHUB_SHA;
-  const changes = getChangedFiles(sha, compareSha);
+    url: 'https://remix-fly-region-test.fly.dev/build/info.json',
+  })
+  const sha = buildInfo.data.sha
+  const compareSha = process.env.GITHUB_SHA
+  const changes = getChangedFiles(sha, compareSha)
 
   const isDeployable =
     changes === null ||
     changes.length === 0 ||
-    changes.some(({ filename }) => !filename.startsWith("content"));
+    changes.some(({ filename }) => !filename.startsWith('content'))
 
-  console.error(isDeployable ? "🟢 Deploy" : "🔴 Skip Deployment");
+  console.error(isDeployable ? '🟢 Deploy' : '🔴 Skip Deployment')
 
-  console.log(isDeployable);
+  console.log(isDeployable)
 }
 
-go().catch((error) => {
-  console.error(error);
-  console.log(true);
-});
+go().catch(error => {
+  console.error(error)
+  console.log(true)
+})

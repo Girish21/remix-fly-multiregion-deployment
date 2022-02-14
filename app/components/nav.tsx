@@ -1,14 +1,14 @@
-import NavLink from "./nav-link";
-import ThemeToggle, { SsrPlaceholder } from "./theme-toggle";
-import { ClientOnly } from "remix-utils";
+import NavLink from './nav-link'
+import ThemeToggle, { SsrPlaceholder } from './theme-toggle'
+import { ClientOnly } from 'remix-utils'
 
 export default function Nav() {
   return (
-    <header className="py-8 px-6">
-      <nav className="max-w-4xl mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <NavLink to="/">Home</NavLink>
-          <NavLink prefetch="intent" to="/blog">
+    <header className='py-8 px-6'>
+      <nav className='mx-auto flex max-w-4xl items-center justify-between'>
+        <div className='flex items-center gap-4'>
+          <NavLink to='/'>Home</NavLink>
+          <NavLink prefetch='intent' to='/blog'>
             Blog
           </NavLink>
         </div>
@@ -22,5 +22,5 @@ export default function Nav() {
         </ClientOnly>
       </nav>
     </header>
-  );
+  )
 }

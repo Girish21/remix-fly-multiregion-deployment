@@ -4,7 +4,7 @@
 
 @layer components {
   [data-reach-skip-nav-link]:focus {
-    @apply bg-sky-500 rounded;
+    @apply rounded bg-sky-500;
   }
 
   .dark [data-reach-skip-nav-link]:focus {

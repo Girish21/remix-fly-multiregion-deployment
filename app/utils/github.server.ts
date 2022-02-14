@@ -49,8 +49,8 @@ function cachify<TArgs, TReturn>(fn: (args: TArgs) => Promise<TReturn>) {
 
 async function downloadDirectoryListImpl(path: string) {
   const { data } = await octokit.repos.getContent({
-    owner: "Girish21",
-    repo: "remix-fly-multiregion-deployment",
+    owner: getRequiredEnvVar("GH_OWNER"),
+    repo: getRequiredEnvVar("GH_REPO"),
     path,
   });
 
@@ -67,8 +67,8 @@ async function downloadFileByShaImpl(sha: string) {
   const { data } = await octokit.request(
     "GET /repos/{owner}/{repo}/git/blobs/{file_sha}",
     {
-      owner: "Girish21",
-      repo: "remix-fly-multiregion-deployment",
+      owner: getRequiredEnvVar("GH_OWNER"),
+      repo: getRequiredEnvVar("GH_REPO"),
       file_sha: sha,
     }
   );

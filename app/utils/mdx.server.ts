@@ -161,6 +161,10 @@ export async function getMdxPage({
     return null;
   }
 
+  if (!compiledPage.frontmatter.published) {
+    return null;
+  }
+
   return {
     code: compiledPage.code,
     contentDirectory,

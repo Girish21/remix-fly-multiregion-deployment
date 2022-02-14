@@ -43,8 +43,8 @@ export async function getContentList(contentDirectory = "blog") {
 }
 
 export async function getContent(slug: string) {
-  const content = await db.content.findUnique({
-    where: { slug },
+  const rows = await db.content.findMany({
+    where: { slug, published: true },
     select: {
       code: true,
       contentDirectory: true,
@@ -57,9 +57,15 @@ export async function getContent(slug: string) {
     },
   });
 
-  if (!content) {
+  if (!rows || rows.length === 0) {
     return null;
   }
+
+  if (rows.length > 1) {
+    throw new Error(`Something is very wrong for the slug ${slug}`);
+  }
+
+  const content = rows[0];
 
   return {
     ...content,

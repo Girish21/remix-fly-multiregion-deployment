@@ -4,7 +4,11 @@ build/
 /.cache
 /server/build
 /public/build
+
 .env
+
 prisma/*.db
 prisma/*.db*
+
 app/styles
+app/**/*.ignore.*

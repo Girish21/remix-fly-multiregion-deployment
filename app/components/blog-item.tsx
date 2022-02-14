@@ -17,7 +17,9 @@ export default function BlogItem({ description, slug, title }: BlogItem) {
         <p className='text-base text-gray-600 dark:text-gray-200'>
           {description}
         </p>
-        <div className='text-base font-bold text-gray-800'>Read more</div>
+        <div className='text-base font-bold text-gray-800 dark:text-gray-100'>
+          Read more
+        </div>
       </Link>
     </li>
   )

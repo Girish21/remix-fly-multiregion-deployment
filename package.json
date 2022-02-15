@@ -7,6 +7,8 @@
     "build:css": "tailwindcss -m -i styles/app.css -o app/styles/app.css",
     "build:remix": "remix build && node ./others/build-info.js",
     "build": "npm run build:css && npm run build:remix",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
     "deploy": "fly deploy --remote-only",
     "dev:content": "node -r esbuild-register -r dotenv/config others/refresh-on-content-change.ts",
     "dev:css": "tailwindcss -w -i styles/app.css -o app/styles/app.css",
@@ -17,7 +19,10 @@
     "new:blog": "node -r esbuild-register others/new-blog.ts",
     "postinstall": "remix setup node",
     "start": "remix-serve build",
+    "start:mocks": "node -r dotenv/config -r ./mocks node_modules/.bin/remix-serve build",
     "test": "jest",
+    "test:e2e:dev": "cross-env RUNNING_E2E=true start-server-and-test dev http://localhost:3000/ cy:open",
+    "test:e2e:run": "cross-env RUNNING_E2E=true PORT=8811 start-server-and-test dev http://localhost:8811/ cy:run",
     "typecheck": "tsc -b"
   },
   "dependencies": {
@@ -46,6 +51,7 @@
   "devDependencies": {
     "@remix-run/dev": "^1.1.1",
     "@tailwindcss/typography": "^0.5.1",
+    "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
@@ -60,6 +66,8 @@
     "@typescript-eslint/parser": "^5.12.0",
     "chokidar": "^3.5.3",
     "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "cypress": "^9.5.0",
     "dotenv": "^16.0.0",
     "esbuild-jest": "^0.5.0",
     "esbuild-register": "^3.3.2",
@@ -78,6 +86,7 @@
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.7",
     "prisma": "^3.9.2",
+    "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.0.22",
     "typescript": "^4.1.2"
   },

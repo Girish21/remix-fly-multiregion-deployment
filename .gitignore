@@ -13,3 +13,5 @@ prisma/*.db*
 
 app/styles
 app/**/*.ignore.*
+
+cypress/videos/

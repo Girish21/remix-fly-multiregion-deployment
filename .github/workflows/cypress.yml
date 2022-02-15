@@ -43,7 +43,6 @@ jobs:
           start: npm run start:mocks
           wait-on: 'http://localhost:8811'
           parallel: true
-          group: 'Remix Blog Cypress'
         env:
           PORT: '8811'
           DISABLE_TELEMETRY: 'true'

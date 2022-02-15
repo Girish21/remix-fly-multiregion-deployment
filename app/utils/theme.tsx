@@ -46,6 +46,7 @@ export function ThemeProvider({
 
   const themeFetcher = useFetcher()
   const skipFirstRender = React.useRef(true)
+  const themeFetcherRef = React.useRef(themeFetcher)
 
   React.useEffect(() => {
     if (skipFirstRender.current) {
@@ -56,11 +57,10 @@ export function ThemeProvider({
       return
     }
 
-    themeFetcher.submit(
+    themeFetcherRef.current.submit(
       { theme },
       { method: 'post', action: '_action/set-theme' },
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme])
 
   React.useEffect(() => {

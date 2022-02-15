@@ -1,0 +1,48 @@
+name: Cypress
+on:
+  push:
+    branches:
+      - feat/cypress
+
+jobs:
+  name: ⚫️ Cypress
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: ['Replica 1', 'Replica 2', 'Replica 3']
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: 🏄 Copy test env vars
+        run: cp .env.example .env
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: ⚙️ Build
+        run: npm run build
+
+      - name: ▲ Prisma
+        run: npx prisma migrate reset --force
+
+      - name: 🌳 Cypress run
+        uses: cypress-io/github-action@v2
+        continue-on-error: true
+        with:
+          start: npm run start:mocks
+          wait-on: 'http://localhost:8811'
+          parallel: true
+          group: 'Remix Blog Cypress'
+        env:
+          PORT: '8811'
+          DISABLE_TELEMETRY: 'true'

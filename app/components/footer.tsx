@@ -1,4 +1,4 @@
-import type * as React from 'react'
+import * as React from 'react'
 
 import LinkOrAnchor from './link-or-anchor'
 import GitHubSvg from '~/assets/github.svg'

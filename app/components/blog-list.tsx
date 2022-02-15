@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { getMdxListItems } from '~/utils/mdx.server'
 import BlogItem from './blog-item'
 

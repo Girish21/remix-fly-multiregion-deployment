@@ -15,9 +15,10 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-    "importsNotUsedAsValues": "error",
+    "importsNotUsedAsValues": "remove",
     "allowJs": true,
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true

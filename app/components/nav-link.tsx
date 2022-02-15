@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { NavLinkProps } from 'remix'
 import { NavLink as RemixNavLink } from 'remix'
 import clsx from 'clsx'

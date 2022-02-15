@@ -1,3 +1,4 @@
+import * as React from 'react'
 import MoonSvg from '~/assets/moon.svg'
 import LightBulbSvg from '~/assets/light-bulb.svg'
 import { Theme, useTheme } from '~/utils/theme'

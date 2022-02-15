@@ -5,7 +5,8 @@ on:
       - feat/cypress
 
 jobs:
-  name: ⚫️ Cypress
+  cypress:
+    name: ⚫️ Cypress
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

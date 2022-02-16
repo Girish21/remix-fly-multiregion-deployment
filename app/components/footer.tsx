@@ -14,7 +14,7 @@ export function preloadFooterSvg() {
 export default function Footer() {
   return (
     <footer className='mx-auto flex min-h-screen max-w-4xl items-center justify-center px-6'>
-      <div className='flex gap-32'>
+      <div className='flex flex-col gap-32 md:flex-row'>
         <div className='flex flex-col gap-8'>
           <h3 className='place-self-center text-4xl font-bold text-gray-800 dark:text-gray-100'>
             Remix Blog
@@ -35,7 +35,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className='flex flex-col justify-center'>
-          <ul className='flex flex-col gap-4'>
+          <ul className='flex flex-col items-center gap-4 md:items-start'>
             <Link href='/'>Home</Link>
             <Link href='/blog'>Blog</Link>
           </ul>

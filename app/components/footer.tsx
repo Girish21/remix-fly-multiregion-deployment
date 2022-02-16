@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import LinkOrAnchor from './link-or-anchor'
-import GitHubSvg from '~/assets/github.svg'
-import TwitterSvg from '~/assets/twitter.svg'
+import GitHubSvg from '~/assets/icons/github.svg'
+import TwitterSvg from '~/assets/icons/twitter.svg'
 
 export function preloadFooterSvg() {
   return [

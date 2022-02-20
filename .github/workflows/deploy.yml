@@ -29,6 +29,8 @@ jobs:
         id: changes
         run: >-
           echo ::set-output name=DEPLOYABLE::$(node ./others/is-deployable.js)
+        env:
+          FLY_APP_NAME: ${{ secrets.FLY_APP_NAME }}
 
       - name: ❓ Deployable
         run: >-

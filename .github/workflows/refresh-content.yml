@@ -27,3 +27,4 @@ jobs:
         run: node ./others/refresh-content.js
         env:
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+          FLY_APP_NAME: ${{ secrets.FLY_APP_NAME }}

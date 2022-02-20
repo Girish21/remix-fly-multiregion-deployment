@@ -189,9 +189,9 @@ jobs:
           context: .
           push: true
           tags: registry.fly.io/${{ secrets.FLY_APP_NAME }}:${{ github.sha }}
-          build-args:
-            - COMMIT_SHA=${{ github.sha }}
-            - GITHUB_REPOSITORY=${{ github.repository }}
+          build-args: |
+            COMMIT_SHA=${{ github.sha }}
+            GITHUB_REPOSITORY=${{ github.repository }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
 

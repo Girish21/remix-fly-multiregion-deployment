@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
     for (const path of body.paths) {
       const [contentDirectory, dirOrFile] = path.split('/')
       if (!contentDirectory || !dirOrFile) {
-        return
+        continue
       }
       const slug = nodepath.parse(dirOrFile).name
       await setRequiresUpdate({ slug, contentDirectory })

@@ -22,7 +22,10 @@ async function go() {
 
   const changedFiles = getChangedFiles(sha, compareSha) ?? []
   const contentPaths = changedFiles
-    .filter(({ filename }) => filename.startsWith('content'))
+    .filter(
+      ({ filename }) =>
+        filename.startsWith('content') && filename.match(/\w+\/\w+\/\w+/g),
+    )
     .map(({ filename }) => filename.replace(/^content\//, ''))
 
   if (contentPaths && contentPaths.length > 0) {

@@ -1,13 +1,14 @@
 import type { ActionFunction } from 'remix'
 import { json } from 'remix'
 import nodepath from 'path'
-import { setRequiresUpdate } from '~/model/content.server'
+import { refreshAllContent, setRequiresUpdate } from '~/model/content.server'
 import { getMdxListItems } from '~/utils/mdx.server'
 import { setContentSHA } from '~/model/content-state.server'
 import { getRequiredEnvVar } from '~/utils/misc'
 
 type Body = {
-  paths: Array<string>
+  refreshAll?: string
+  paths?: Array<string>
   sha: string
 }
 
@@ -17,6 +18,12 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const body = (await request.json()) as Body
+
+  if ('refreshAll' in body && body.refreshAll === 'true') {
+    await refreshAllContent()
+    console.log(`🌀 Refreshing all contents for the sha ${body.sha}`)
+    return json({ message: 'refreshing all contents' })
+  }
 
   if ('paths' in body && Array.isArray(body.paths)) {
     const refreshPaths = []

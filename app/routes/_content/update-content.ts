@@ -7,7 +7,7 @@ import { setContentSHA } from '~/model/content-state.server'
 import { getRequiredEnvVar } from '~/utils/misc'
 
 type Body = {
-  refreshAll?: string
+  refreshAll?: boolean
   paths?: Array<string>
   sha: string
 }
@@ -19,7 +19,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const body = (await request.json()) as Body
 
-  if ('refreshAll' in body && body.refreshAll === 'true') {
+  if ('refreshAll' in body && body.refreshAll === true) {
     await refreshAllContent()
     console.log(`🌀 Refreshing all contents for the sha ${body.sha}`)
     return json({ message: 'refreshing all contents' })

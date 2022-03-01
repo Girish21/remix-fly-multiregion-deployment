@@ -30,8 +30,8 @@
     "@octokit/rest": "^18.12.0",
     "@prisma/client": "^3.9.2",
     "@reach/skip-nav": "^0.16.0",
-    "@remix-run/react": "^1.1.1",
-    "@remix-run/serve": "^1.1.1",
+    "@remix-run/react": "^1.2.3",
+    "@remix-run/serve": "^1.2.3",
     "clsx": "^1.1.1",
     "highlight.js": "^11.4.0",
     "lru-cache": "^6.0.0",
@@ -43,13 +43,13 @@
     "remark-autolink-headings": "^7.0.1",
     "remark-gfm": "^3.0.1",
     "remark-slug": "^7.0.1",
-    "remix": "^1.1.1",
+    "remix": "^1.2.3",
     "remix-seo": "^0.1.0",
     "remix-utils": "^2.5.0",
     "tiny-invariant": "^1.2.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.1.1",
+    "@remix-run/dev": "^1.2.3",
     "@tailwindcss/typography": "^0.5.1",
     "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.16.2",
@@ -62,8 +62,8 @@
     "@types/lru-cache": "^5.1.1",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
     "chokidar": "^3.5.3",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
@@ -88,7 +88,7 @@
     "prisma": "^3.9.2",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.0.22",
-    "typescript": "^4.1.2"
+    "typescript": "^4.6.2"
   },
   "engines": {
     "node": ">=14"
